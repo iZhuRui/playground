@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<playground version='6.0' target-platform='ios' display-mode='raw'>
+    <pages>
+        <page name='page02'/>
+        <page name='page01'/>
+        <page name='page注释'/>
+        <page name='page数据类型'/>
+    </pages>
+</playground>
