@@ -3,7 +3,9 @@
     <pages>
         <page name='page02'/>
         <page name='page01'/>
-        <page name='page注释'/>
-        <page name='page数据类型'/>
+        <page name='page03注释'/>
+        <page name='page04数据类型'/>
+        <page name='page05流程控制'/>
+        <page name='page06函数'/>
     </pages>
 </playground>
