@@ -128,29 +128,45 @@
  输入输出参数（In-Out Parameter）
  可以用inout定义一个输入输出参数：可以在函数内部修改外部实参的值
  
+ var number = 10
+ func add(_ num: inout Int){
+     num += 10
+ }
+ add(&number)
+ print(number)
+
+ //func swapValues (_ v1:inout Int, _ v2:inout Int){
+ //    let tmp = v1
+ //    v1 = v2
+ //    v2 = tmp
+ //}
+ func swapValues (_ v1: inout Int, _ v2: inout Int) {
+     (v1, v2) = (v2, v1)
+ }
+ var num1 = 20
+ var num2 = 40
+ swapValues(&num1, &num2)
+ print("\(num1),\(num2)")
+
+ //可变参数不能标记为inout
+ //inout参数不能有默认值
+ //inout参数的本质是地址传递（引用传递）
+
+ var numbers = [10, 20, 30]
+ numbers[0] = 20
+ numbers[0] = 30
+
+ func test (_ num: inout Int) {
+     print("\(num)")
+ }
+ test(&numbers[0])
+ //innout参数只能传入可以被多次赋值的
  */
-var number = 10
-func add(_ num: inout Int){
-    num += 10
-}
-add(&number)
-print(number)
 
-//func swapValues (_ v1:inout Int, _ v2:inout Int){
-//    let tmp = v1
-//    v1 = v2
-//    v2 = tmp
-//}
-func swapValues (_ v1: inout Int, _ v2: inout Int) {
-    (v1, v2) = (v2, v1)
-}
-var num1 = 20
-var num2 = 40
-swapValues(&num1, &num2)
-print("\(num1),\(num2)")
 
-//函数重载
+
 /**
+ //函数重载
  规则
  1.函数名相同
  2.参数个数不同、参数类型不同、参数标签不同
@@ -175,10 +191,8 @@ print("\(num1),\(num2)")
  func sum(a:Int, b:Int) -> Int {
      a+b
  }//参数标签不同
- */
 
-
-/**
+ 
  函数重载注意点
  1.返回值类型与函数重载无关
  func sum(v1: Int, v2: Int) -> Int {v1 + v2}
@@ -200,13 +214,36 @@ print("\(num1),\(num2)")
  
  
  3.可变参数、省略参数标签、函数重载一起使用产生二义性时，编译器有可能会报错
- 
+ func sum(v1: Int, v2: Int) -> Int {
+     v1 + v2
+ }
+ func sum(_ v1: Int,_ v2: Int) -> Int {
+     v1 + v2
+ }
+ func sum(_ numbers:Int...) -> Int {
+     var total = 0
+     for number in numbers {
+         total += number
+     }
+     return total
+ }
+ sum(10, 20)
+ */
+
+/**
+ //内联函数
+ //如果开启了编译器优化（release模式默认会开启优化），编译器会自动将某些函数变成内联函数
+ //内联函数其实是将函数调用展开成函数体，可以省略函数开启和关闭栈空间
+ //以下函数不会被内联
+ //1.函数体比较长
+ //2.包含递归调用
+ //3.包含动态派发
  */
 
 
-
-
 //函数类型
+//每一个函数都是有类型的，函数类型由形式参数类型、返回值类型组成
+func text() {} // () -> Void 或者 () -> ()
 func sumTest(a:Int, b:Int) -> Int{
     a+b
 }
