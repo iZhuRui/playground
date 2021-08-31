@@ -238,37 +238,108 @@
  //1.函数体比较长
  //2.包含递归调用
  //3.包含动态派发
+ 
+ //永远不会被内联（即使开启了编译器优化）
+ @inline(never) func test() {
+     print("test")
+ }
+
+ //开启编译器优化后，即使代码很长，也会被内联（递归调用函数、动态派发的函数除外）
+ @inline(__always) func test() {
+     print("test")
+ }
+ 
+ //在release模式下，编译器已经开启优化，会自动决定哪些函数需要内联，因此没必要使用@inline
  */
 
 
-//函数类型
-//每一个函数都是有类型的，函数类型由形式参数类型、返回值类型组成
-func text() {} // () -> Void 或者 () -> ()
-func sumTest(a:Int, b:Int) -> Int{
-    a+b
-}
-var fn:(Int, Int) -> Int = sumTest
-fn(2,4)//6,调用时不需要参数标签
+/**
+ //函数类型
+ //每一个函数都是有类型的，函数类型由形式参数类型、返回值类型组成
+ func test() {} // () -> Void 或者 () -> ()
+ func sumTest(a:Int, b:Int) -> Int{
+     a+b
+ }// (Int, Int) -> Int
 
-func next(_ input:Int) -> Int {
-    input + 1
-}
+ //定义变量
+ var fn:(Int, Int) -> Int = sumTest
+ fn(2,4)//6,调用时不需要参数标签
 
-func previous(_ input:Int) -> Int {
-    input - 1
-}
+ //函数类型作为函数参数
+ func sum(v1: Int, v2: Int) -> Int {
+     v1 + v2
+ }
+ func difference(v1: Int, v2: Int) -> Int {
+     v1 - v2
+ }
+ func printResult(_ mathFn: (Int, Int) -> Int, _ a: Int, _ b: Int) {
+     print("result: \(mathFn(a, b))")
+ }
+ printResult(sum(v1:v2:), 5, 2)
+ printResult(difference(v1:v2:), 5, 2)
 
-func forward(_ forward:Bool) -> (Int) -> Int {
-    forward ? next : previous
+ //函数类型作为函数返回值
+ func next(_ input:Int) -> Int {
+     input + 1
+ }
+
+ func previous(_ input:Int) -> Int {
+     input - 1
+ }
+
+ //forward函数，(Int) -> Int是他的返回类型
+ //返回值是函数类型的函数，称为高阶函数
+ func forward(_ forward:Bool) -> (Int) -> Int {
+     forward ? next : previous
+ }
+ forward(true)(3)
+ forward(false)(3)
+ */
+
+
+/**
+ //类型起别名
+ //typealias用来给类型起别名
+ typealias Byte = Int8
+ typealias Short = Int16
+ typealias Long = Int64
+
+ typealias Date = (year:Int,month:Int,day:Int)
+ func dateTest(_ date:Date) {
+     print(date)
+ }
+ dateTest((2020,9,17))
+ dateTest((2020,2,14))
+
+
+ typealias IntFn = (Int, Int) -> Int
+ func difference(v1: Int, v2: Int) -> Int {
+     v1 - v2
+ }
+ let fn: IntFn = difference(v1:v2:)
+ fn(20,10)
+
+ func setFn(_ fn: IntFn) { }
+ setFn(difference(v1:v2:))
+
+ func getFn() -> IntFn { difference(v1:v2:) }
+ getFn()
+
+ //按照swift标准库的定义，Void就是空元组()
+ public typealias Void = ()
+ */
+
+
+//嵌套函数
+//将函数定义在函数内部
+func forward(_ forward: Bool) -> (Int) -> Int {
+    func next(_ input: Int) -> Int {
+        input + 1
+    }
+    func previous(_ input: Int) -> Int {
+        input - 1
+    }
+    return forward ? next(_:) : previous(_:)
 }
 forward(true)(3)
-forward(false)(3)
-
-//类型起别名
-typealias Date = (year:Int,month:Int,day:Int)
-func dateTest(_ date:Date) {
-    print(date)
-}
-dateTest((2020,9,17))
-
-dateTest((2020,2,14))
+forward(false)(4)

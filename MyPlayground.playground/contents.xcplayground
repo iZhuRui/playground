@@ -7,5 +7,6 @@
         <page name='page04数据类型'/>
         <page name='page05流程控制'/>
         <page name='page06函数'/>
+        <page name='page07枚举'/>
     </pages>
 </playground>
