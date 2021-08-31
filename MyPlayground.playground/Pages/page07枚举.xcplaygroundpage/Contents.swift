@@ -158,3 +158,33 @@ func calculate (_ expr: ArithExpr) -> Int {
     }
 }
 calculate(difference)
+
+
+//MemoryLayout
+//可以使用MemoryLayout获取数据类型占用的内存大小
+var age : Int = 10
+//MemoryLayout<Int>.size
+//MemoryLayout<Int>.stride
+//MemoryLayout<Int>.alignment
+MemoryLayout.size(ofValue: age)
+MemoryLayout.stride(ofValue: age)
+MemoryLayout.alignment(ofValue: age)
+
+enum P_Pwd {
+    case number(Int, Int, Int, Int)//4 * 8
+    case other//1
+    //other是1个字节，可以看作是为了和32字节的number做区分；other 1个字节，只是为了作区分，不用浪费空间分配2、3个字节
+}//关联值，可传入不同的值，每一个单独的枚举变量，要有自己的内存去存储；传进去的值，直接存入枚举变量内存中
+var p_pwd = P_Pwd.number(3, 8, 9, 8)
+p_pwd = .other
+MemoryLayout<P_Pwd>.size//33，实际用到的空间大小
+MemoryLayout<P_Pwd>.stride//40，分配占用的控件大小
+MemoryLayout<P_Pwd>.alignment//8，对齐参数
+
+enum P_Season :Int {
+    case spring = 909099999099,summer,autumn,winter
+}//原始值，是固定死的，不允许之后传入不同的值，不会存储到枚举变量内存中；
+MemoryLayout<P_Season>.size//1
+MemoryLayout<P_Season>.stride//1
+MemoryLayout<P_Season>.alignment//1
+
