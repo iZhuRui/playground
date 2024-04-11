@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <playground version='6.0' target-platform='ios' display-mode='raw'>
     <pages>
-        <page name='page02'/>
         <page name='page01'/>
+        <page name='page02'/>
         <page name='page03注释'/>
         <page name='page04数据类型'/>
         <page name='page05流程控制'/>
         <page name='page06函数'/>
         <page name='page07枚举'/>
+        <page name='page08可选项'/>
     </pages>
 </playground>

@@ -177,8 +177,8 @@ enum P_Pwd {
 }//关联值，可传入不同的值，每一个单独的枚举变量，要有自己的内存去存储；传进去的值，直接存入枚举变量内存中
 var p_pwd = P_Pwd.number(3, 8, 9, 8)
 p_pwd = .other
-MemoryLayout<P_Pwd>.size//33，实际用到的空间大小
-MemoryLayout<P_Pwd>.stride//40，分配占用的控件大小
+MemoryLayout<P_Pwd>.size//33，实际用到的空间大小；32个字节拿来放case number(Int, Int, Int, Int),最后一个字节拿来放case other
+MemoryLayout<P_Pwd>.stride//40，分配占用的空间大小，真正占用大小；分配的大小，要是alignment的倍数，是40
 MemoryLayout<P_Pwd>.alignment//8，对齐参数
 
 enum P_Season :Int {
@@ -188,3 +188,21 @@ MemoryLayout<P_Season>.size//1
 MemoryLayout<P_Season>.stride//1
 MemoryLayout<P_Season>.alignment//1
 
+enum Season_1 {
+    //类似于  0    1       2      3；用一个字节就能定义这个枚举变量
+    case spring,summer,autumn,winter
+}
+var s = Season_1.spring
+MemoryLayout<Season_1>.size//1
+MemoryLayout<Season_1>.stride//1
+MemoryLayout<Season_1>.alignment//1
+
+enum Season_2 : String {
+    //类似于存储的是0  1   2   3，要去实际值，用rawvalue
+    case spring = "sp", summer = "su", autumn = "au", winter = "wi"
+}
+MemoryLayout<Season_2>.size//1
+MemoryLayout<Season_2>.stride//1
+MemoryLayout<Season_2>.alignment//1
+var s2 = Season_2.spring//原始值不会存储到枚举变量内存中，关联值才会
+s2.rawValue
